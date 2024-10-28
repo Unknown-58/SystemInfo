@@ -13,9 +13,13 @@ def cpu_name():  # Получаем название процессора
 def os_info():  # Информация о ОС и памяти
     os_info = platform.system() + " " + platform.release()
     memory_info = psutil.virtual_memory()
+    s_n = subprocess.check_output("wmic bios get serialnumber", shell=True).decode().split('\n')[1].strip()
+    model = subprocess.check_output("wmic computersystem get model", shell=True).decode().split('\n')[1].strip()
     os_details = {
         "OS": os_info,
         "Архитектура": platform.architecture()[0],
+        "Model" : model,
+        "S/N" : s_n,
     }
     memory_details = {
         "Memory": f"{memory_info.total // (1024 ** 2)} Gb",
