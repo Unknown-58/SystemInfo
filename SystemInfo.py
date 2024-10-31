@@ -24,6 +24,20 @@ def os_info():  # Информация о ОС и памяти
     memory_details = {
         "Memory": f"{memory_info.total // (1024 ** 2)} Gb",
     }
+    
+    disk_info = []  # Информация о дисках
+    total_disks = 0
+    for partition in psutil.disk_partitions():
+        partition_usage = psutil.disk_usage(partition.mountpoint)
+        total_disks += 1
+        disk_info.append({
+            "Device": partition.device,
+            "Total": f"{partition_usage.total // (1024 ** 3)} Gb",
+            "Used": f"{partition_usage.used // (1024 ** 3)} Gb",
+            "Free": f"{partition_usage.free // (1024 ** 3)} Gb",
+        })
+    
+    return os_details, memory_details, total_disks, disk_info
 
 def cpu():
     cpu_core = psutil.cpu_count(logical=False)
