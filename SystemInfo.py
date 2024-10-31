@@ -51,12 +51,20 @@ def cpu():
     }
     return cpu_details
 
-def net_info():  # Информация о сетевых интерфейсах
+def get_external_ip():
+    try:
+        result = subprocess.run(['curl', '-s', 'ifconfig.me'], capture_output=True, text=True, check=True)
+        return result.stdout.strip()
+    except subprocess.CalledProcessError:
+        return "Ошибка получения внешнего IP"
+
+def net_info():
     net_info = psutil.net_if_addrs()
     net_table = PrettyTable()
     net_table.field_names = ["Интерфейс", "IP-адрес", "Маска подсети"]
-    
-    for interface, addresses in net_info.items():
+    external_ip = get_external_ip() # Получаем внешний IP и добавляем его в таблицу
+    net_table.add_row(["Внешний IP", external_ip, "N/A"])
+    for interface, addresses in net_info.items(): # Добавляем информацию о сетевых интерфейсах
         for address in addresses:
             if address.family == socket.AF_INET:  # Фильтруем только IPv4 адреса
                 net_table.add_row([interface, address.address, address.netmask])
