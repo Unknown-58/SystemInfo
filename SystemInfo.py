@@ -57,7 +57,7 @@ def get_external_ip():
         return result.stdout.strip()
     except subprocess.CalledProcessError:
         return "Ошибка получения внешнего IP"
-1
+
 def net_info():
     net_info = psutil.net_if_addrs()
     net_table = PrettyTable()
