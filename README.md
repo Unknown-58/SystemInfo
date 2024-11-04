@@ -7,3 +7,4 @@ To get the application, you need to install Python on the official [website](htt
 Creating an application in the form of .exe: `pyinstaller --onefile file.py`
 - `--windowed` - a flag that prevents the application from opening the console window.
 - `--icon=/path/path/` - The checkbox is used to indicate the icon in the format `.ico`
+- `--add-data "info;info"` - The command allows you to add all files from the section you specified
